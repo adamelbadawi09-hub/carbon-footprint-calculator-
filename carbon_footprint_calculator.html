@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Calculator</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --dark-green: #047857;
+            --accent-blue: #0284c7;
+            --accent-hover: #0369a1;
+            --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--dark-green) !important;
+        }
+
+        .hero-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            overflow: hidden;
+        }
+
+        .custom-badge {
+            background-color: #d1fae5;
+            color: #065f46;
+            font-weight: 600;
+            padding: 0.35rem 0.85rem;
+            border-radius: 50rem;
+            display: inline-block;
+        }
+
+        .img-hero {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .img-hero:hover {
+            transform: scale(1.01);
+        }
+
+        /* Styled hyperlink button as per requirement */
+        .btn-custom-blue {
+            background-color: var(--accent-blue);
+            color: #ffffff !important;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 14px 0 rgba(2, 132, 199, 0.39);
+            transition: all 0.2s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-custom-blue:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(2, 132, 199, 0.45);
+        }
+
+        .calc-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .guide-banner {
+            background: #1e293b;
+            color: #f8fafc;
+            border-radius: 1rem;
+        }
+
+        footer {
+            margin-top: auto;
+            background: #0f172a;
+            color: #94a3b8;
+        }
+
+        .result-card {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand fs-4" href="#">
+                <i class="fa-solid fa-leaf text-success me-2"></i>EcoFootprint
+            </a>
+            <button class="btn btn-outline-success btn-sm rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#githubGuideModal">
+                <i class="fa-brands fa-github me-1"></i> Submission Guide
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container Fluid -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <!-- Hero Card Section -->
+            <div class="hero-card p-4 p-md-5 mb-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-7">
+                        <span class="custom-badge mb-3">
+                            <i class="fa-solid fa-earth-americas me-1"></i> Environmental Awareness
+                        </span>
+                        
+                        <!-- Requirement 1: Main Heading (h1) -->
+                        <h1 class="display-4 fw-bold text-dark mb-2">Carbon Footprint Calculator</h1>
+                        
+                        <!-- Requirement 2: Subheading (h2) -->
+                        <h2 class="h3 text-danger fw-bold mb-4">Climate change is real!!</h2>
+                        
+                        <!-- Requirement 3: Introduction Paragraph (p) -->
+                        <p class="lead text-muted mb-4">
+                            Understanding your personal carbon footprint is the first step toward taking meaningful climate action. Every daily activity—from how we commute to work, to the electricity we consume at home, and the food choices on our dinner plate—contributes to greenhouse gas emissions. By measuring our individual impact, we can make informed lifestyle changes to reduce our carbon emissions and protect our planet for future generations.
+                        </p>
+
+                        <!-- Requirement 5: Secondary Heading (h4) -->
+                        <h4 class="fw-bold text-success mb-3">
+                            <i class="fa-solid fa-chart-line me-2"></i>How Big is Your Environmental Footprint?
+                        </h4>
+
+                        <!-- Requirement 6: Supporting Paragraph (p) -->
+                        <p class="text-secondary mb-4">
+                            Climate change threatens global ecosystems, biodiversity, and human livelihoods. Small daily habits multiplied by millions of people can create a massive positive effect. Calculate your estimated annual carbon output below and discover practical steps to reduce your impact today!
+                        </p>
+
+                        <!-- Requirement 7: Calculate Button (Styled <a> link) -->
+                        <a href="#calculatorSection" class="btn-custom-blue fs-5 mb-3 mb-md-0">
+                            <i class="fa-solid fa-calculator"></i> Calculate Now
+                        </a>
+                    </div>
+
+                    <!-- Requirement 4: Image (img) -->
+                    <div class="col-lg-5">
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80" 
+                             alt="Environmental Sustainability - Green Leaf holding earth" 
+                             class="img-hero"
+                             onerror="this.src='https://placehold.co/600x400/10b981/ffffff?text=Environmental+Sustainability'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Calculator Section -->
+            <div id="calculatorSection" class="hero-card p-4 p-md-5 mb-5">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-dark"><i class="fa-solid fa-sliders text-success me-2"></i>Estimate Your Annual Footprint</h3>
+                    <p class="text-muted">Fill out the quick options below to calculate your estimated annual CO₂ emissions.</p>
+                </div>
+
+                <form id="footprintForm" onsubmit="event.preventDefault(); calculateFootprint();">
+                    <div class="row g-4">
+                        <!-- Transportation -->
+                        <div class="col-md-4">
+                            <div class="calc-box h-100">
+                                <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-car me-2"></i>Transportation</h5>
+                                <label for="commute" class="form-label small text-muted">Weekly Commute (km):</label>
+                                <input type="number" id="commute" class="form-control mb-3" placeholder="e.g. 150" value="100" min="0" required>
+                                
+                                <label for="transportType" class="form-label small text-muted">Primary Vehicle Type:</label>
+                                <select id="transportType" class="form-select">
+                                    <option value="0.21">Petrol / Diesel Car</option>
+                                    <option value="0.10">Hybrid Vehicle</option>
+                                    <option value="0.05">Electric Vehicle</option>
+                                    <option value="0.03">Public Transit / Bus</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Energy Usage -->
+                        <div class="col-md-4">
+                            <div class="calc-box h-100">
+                                <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-bolt me-2"></i>Home Energy</h5>
+                                <label for="electricity" class="form-label small text-muted">Monthly Electricity Bill ($):</label>
+                                <input type="number" id="electricity" class="form-control mb-3" placeholder="e.g. 100" value="80" min="0" required>
+                                
+                                <label for="energySource" class="form-label small text-muted">Energy Source:</label>
+                                <select id="energySource" class="form-select">
+                                    <option value="1.0">Standard Grid Mix</option>
+                                    <option value="0.5">Partial Solar / Clean Energy</option>
+                                    <option value="0.1">100% Renewable Energy</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Diet & Lifestyle -->
+                        <div class="col-md-4">
+                            <div class="calc-box h-100">
+                                <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-utensils me-2"></i>Dietary Habits</h5>
+                                <label for="diet" class="form-label small text-muted">Diet Type:</label>
+                                <select id="diet" class="form-select mb-3">
+                                    <option value="2.5">High Meat Consumption</option>
+                                    <option value="1.9" selected>Average Meat Consumption</option>
+                                    <option value="1.3">Pescatarian / Low Meat</option>
+                                    <option value="1.0">Vegetarian / Vegan</option>
+                                </select>
+
+                                <label for="flights" class="form-label small text-muted">Flights per Year:</label>
+                                <input type="number" id="flights" class="form-control" placeholder="e.g. 2" value="1" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn-custom-blue">
+                            <i class="fa-solid fa-arrows-rotate"></i> Compute CO₂ Footprint
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Results Display Card -->
+                <div id="resultCard" class="result-card mt-5 p-4 bg-light border rounded-3 text-center">
+                    <span class="badge bg-secondary mb-2">Estimated Result</span>
+                    <h4 class="fw-bold">Your Annual Carbon Footprint:</h4>
+                    <div class="display-3 fw-extrabold text-success my-2" id="totalOutput">0.00 <small class="fs-5 text-muted">Tons CO₂/year</small></div>
+                    <p id="feedbackText" class="lead text-secondary mb-3"></p>
+                    <div class="p-3 bg-white border rounded text-start mx-auto" style="max-width: 600px;">
+                        <h6 class="fw-bold text-dark"><i class="fa-solid fa-lightbulb text-warning me-2"></i>Recommended Actions:</h6>
+                        <ul class="small mb-0 text-muted" id="tipsList">
+                            <!-- Tips dynamically added -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitHub Submission Banner -->
+            <div class="guide-banner p-4 p-md-5 d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+                <div>
+                    <h4 class="fw-bold text-white mb-1"><i class="fa-brands fa-github text-success me-2"></i>Ready to Submit Your Project?</h4>
+                    <p class="text-slate-300 mb-0 small">Follow our clear step-by-step instructions to upload your project to GitHub and publish your live link via GitHub Pages.</p>
+                </div>
+                <button class="btn btn-success fw-bold text-nowrap rounded-3 px-4 py-2" data-bs-toggle="modal" data-bs-target="#githubGuideModal">
+                    View Instructions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center border-top">
+        <div class="container">
+            <p class="mb-1 small">&copy; 2026 Carbon Footprint Calculator - Computer Science Term 1 Project.</p>
+            <p class="mb-0 text-muted extra-small" style="font-size: 0.8rem;">Built with HTML5, CSS3, and Bootstrap 5.</p>
+        </div>
+    </footer>
+
+    <!-- GitHub & Pages Deployment Guide Modal -->
+    <div class="modal fade" id="githubGuideModal" tabindex="-1" aria-labelledby="githubGuideModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="githubGuideModalLabel">
+                        <i class="fa-brands fa-github text-success me-2"></i>GitHub & Pages Deployment Guide
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-info py-2 small">
+                        <i class="fa-solid fa-info-circle me-1"></i> Complete these steps to generate the <strong>2 required links</strong> for Schoology submission before <strong>21 October 2026</strong>.
+                    </div>
+
+                    <h6 class="fw-bold text-success mt-3"><i class="fa-solid fa-1 me-2"></i>Step 1: Save Your File</h6>
+                    <p class="small text-muted">Save this entire code snippet on your computer as <code>index.html</code>.</p>
+
+                    <h6 class="fw-bold text-success mt-3"><i class="fa-solid fa-2 me-2"></i>Step 2: Create a Public GitHub Repository</h6>
+                    <ol class="small text-muted">
+                        <li>Go to <a href="https://github.com" target="_blank">GitHub.com</a> and sign in.</li>
+                        <li>Click the <strong>"+"</strong> icon at the top right and select <strong>New repository</strong>.</li>
+                        <li>Name your repository (e.g., <code>carbon-footprint-calculator</code>).</li>
+                        <li>Ensure the repository visibility is set to <strong>Public</strong> (Required).</li>
+                        <li>Click <strong>Create repository</strong>.</li>
+                    </ol>
+
+                    <h6 class="fw-bold text-success mt-3"><i class="fa-solid fa-3 me-2"></i>Step 3: Upload index.html</h6>
+                    <ol class="small text-muted">
+                        <li>In your new repository page, click <strong>uploading an existing file</strong>.</li>
+                        <li>Drag and drop your <code>index.html</code> file.</li>
+                        <li>Click <strong>Commit changes</strong>.</li>
+                    </ol>
+
+                    <h6 class="fw-bold text-success mt-3"><i class="fa-solid fa-4 me-2"></i>Step 4: Enable GitHub Pages (Get Live URL)</h6>
+                    <ol class="small text-muted">
+                        <li>Inside your repository, go to the <strong>Settings</strong> tab.</li>
+                        <li>On the left menu, click <strong>Pages</strong>.</li>
+                        <li>Under <strong>Build and deployment</strong> &gt; <strong>Branch</strong>, select <code>main</code> (or <code>master</code>) and click <strong>Save</strong>.</li>
+                        <li>Wait 1-2 minutes and refresh the page until you see: <em>"Your site is live at https://yourusername.github.io/carbon-footprint-calculator/"</em>.</li>
+                    </ol>
+
+                    <div class="p-3 bg-light border rounded mt-3">
+                        <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-paper-plane text-primary me-2"></i>Schoology Submission Checklist:</h6>
+                        <ul class="small mb-0 text-muted">
+                            <li><strong>Link 1 (GitHub Repository URL):</strong> <code>https://github.com/yourusername/carbon-footprint-calculator</code></li>
+                            <li><strong>Link 2 (Live Website URL):</strong> <code>https://yourusername.github.io/carbon-footprint-calculator/</code></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Interactive Calculator Logic -->
+    <script>
+        function calculateFootprint() {
+            const commute = parseFloat(document.getElementById('commute').value) || 0;
+            const transportType = parseFloat(document.getElementById('transportType').value);
+            const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+            const energySource = parseFloat(document.getElementById('energySource').value);
+            const diet = parseFloat(document.getElementById('diet').value);
+            const flights = parseFloat(document.getElementById('flights').value) || 0;
+
+            // Calculations in metric tons of CO2 per year
+            const transportImpact = (commute * 52 * transportType) / 1000;
+            const energyImpact = ((electricity * 12 * 0.85) / 1000) * energySource;
+            const dietImpact = diet;
+            const flightImpact = flights * 0.9;
+
+            const totalFootprint = (transportImpact + energyImpact + dietImpact + flightImpact).toFixed(2);
+
+            // Display results
+            document.getElementById('totalOutput').innerText = totalFootprint;
+
+            const feedbackText = document.getElementById('feedbackText');
+            const tipsList = document.getElementById('tipsList');
+            tipsList.innerHTML = '';
+
+            if (totalFootprint < 4) {
+                feedbackText.innerText = "Great job! Your carbon footprint is below average.";
+                feedbackText.className = "lead text-success fw-bold mb-3";
+                tipsList.innerHTML = `
+                    <li>Maintain your eco-friendly commuting habits.</li>
+                    <li>Share your sustainable practices with friends and family!</li>
+                `;
+            } else if (totalFootprint >= 4 && totalFootprint <= 8) {
+                feedbackText.innerText = "Moderate Footprint. You are near the global average, but there is room for improvement!";
+                feedbackText.className = "lead text-warning fw-bold mb-3";
+                tipsList.innerHTML = `
+                    <li>Consider using public transportation or carpooling twice a week.</li>
+                    <li>Switch home lighting to LEDs and reduce unnecessary power usage.</li>
+                    <li>Try incorporating 1-2 plant-based days into your diet every week.</li>
+                `;
+            } else {
+                feedbackText.innerText = "Higher than average footprint. Take steps today to lower your environmental impact!";
+                feedbackText.className = "lead text-danger fw-bold mb-3";
+                tipsList.innerHTML = `
+                    <li>Transition towards energy-efficient public transit or an electric vehicle.</li>
+                    <li>Explore clean energy or solar power options for your home.</li>
+                    <li>Reduce long-distance flights and consider offset programs.</li>
+                `;
+            }
+
+            // Show result card
+            document.getElementById('resultCard').style.display = 'block';
+            
+            // Scroll smoothly to results
+            document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
